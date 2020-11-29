@@ -18,6 +18,45 @@
 
 //cc -Wall -Wextra -Werror -D BUFFER_SIZE=32 get_next_line.c get_next_line_utils.c
 
+void	ft_bzero(void *s)
+{
+	size_t i;
+
+	i = 0;
+	while (*s && s)
+	{
+		((char *)s)[i] = 0;
+		i++;
+	}
+}
+char *reminder_check(char *remainder, **line)
+{
+	char *p_nextline;
+
+	p_nextline = NULL;
+	if (remainder)
+	{
+		if ((p_nextline = (ft_strchr(buff,'\n'))))
+		{
+			*p_nextline = '\0';
+			*line = ft_strdup(remainder);
+			p_nextline++;
+			ft_strcpy(remainder);
+		}
+		else
+			{
+				*line = ft_strdup(remainder);
+				b_zero(remainder);
+
+			}
+		return (p_nextline);
+	}
+	else
+		{
+		*line = ft_strdup("");
+		}
+}
+
 int get_next_line(int fd, char **line)
 {
 	//буффер для хранения части строки(проверить на '\0'!
@@ -26,12 +65,10 @@ int get_next_line(int fd, char **line)
 	int					read_byte;
 	//статическая переменная под остаток (после \0) буффера, чтобы продолжать
 	// чтение, чтобы не перепрыгивать через остаток буффера
-	static char 		*reminder;
+	static char 		*remainder;
 	//переменная указывающая на \n в буффере строки
-	char *p_buff;
-
+	char *p_nextline;
 	int flag;
-
 
 	//защита от неправильных значений fd, line и BUFFER_SIZE = 5
 	if (fd < 0 || !line || BUFFER_SIZE < 1)
@@ -41,8 +78,8 @@ int get_next_line(int fd, char **line)
 		return (-1);
 	flag = 1;
 	//для того чтобы в line не было мусора изначально
-	if (reminder)
-		*line = ft_strdup(reminder);
+	if (remainder)
+		*line = ft_strdup(remainder);
 	else
 		*line = ft_strdup("");
 
@@ -51,16 +88,17 @@ int get_next_line(int fd, char **line)
 	{
 		buff[read_byte] = '\0';
 		//проверка буффера на \n
-		if((p_buff = (ft_strchr(buff,'\n'))))
+		if((p_nextline = (ft_strchr(buff,'\n'))))
 		{
-			*p_buff = '\0';
+			*p_nextline = '\0';
 			flag = 0;
 			//записываем прочитанный, но не записанный остаток буффера в стат
 			// .переменную
-			p_buff++;
+			p_nextline++;
 
 			//проблемы с размером буффера
-			reminder = ft_strdup(p_buff);
+			
+			remainder = ft_strdup(p_nextline);
 			//return (1);
 		}
 		*line = ft_strjoin(*line,buff);

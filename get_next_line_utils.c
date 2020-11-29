@@ -71,17 +71,21 @@ char	*ft_strdup(const char *str)
 	return (s);
 }
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_strcpy(char *dest, char *src)
 {
-	size_t i;
+	int i;
 
 	i = 0;
-	while (i < n)
+	while (src[i] != '\0')
 	{
-		((char *)s)[i] = 0;
+		dest[i] = src[i];
 		i++;
 	}
+	dest[i] = '\0';
+	return (dest);
 }
+
+
 
 char	*ft_strchr(const char *str, int c)
 {
