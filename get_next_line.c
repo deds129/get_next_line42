@@ -74,17 +74,20 @@ int			get_next_line(int fd, char **line)
 		*line = ft_strjoin(*line, buff);
 		free(temp);
 	}
-	if (read_byte || ft_strlen(remainer) || ft_strlen(*line))
+	/*
+	 * if (read_byte || ft_strlen(remainer) || ft_strlen(*line))
 		return (1);
-	else
-		return (0);
+	 */
+	if (read_byte)
+		return (1);
+	return (0);
 }
 
 /*
 int			main(void)
 {
 	int i;
-	int fd = open("simple_text", O_RDONLY);
+	int fd = open("1.txt", O_RDONLY);
 	char *line;
 	get_next_line(fd, &line);
 	printf("%s\n",line);
