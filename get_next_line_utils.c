@@ -85,8 +85,6 @@ char	*ft_strcpy(char *dest, char *src)
 	return (dest);
 }
 
-
-
 char	*ft_strchr(const char *str, int c)
 {
 	int			i;
