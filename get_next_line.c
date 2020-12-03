@@ -119,18 +119,29 @@ int			get_next_line(int fd, char **line)
 		*line = ft_strjoin(*line, buff);
 		free(temp);
 	}
+<<<<<<< HEAD
 	//ПЛОХАЯ ОБРАБОТКА ВОЗВРАЩАЕМЫХ ЗНАЧЕНИЙ???
 	if (read_byte || ft_strlen(*line) || ft_strlen(remainer))
+=======
+	/*
+	 * if (read_byte || ft_strlen(remainer) || ft_strlen(*line))
+>>>>>>> 83c8b82eb85c57f66ade676553fd446704c3955f
 		return (1);
-	else
-		return (0);
+	 */
+	if (read_byte)
+		return (1);
+	return (0);
 }
 
 
 int			main(void)
 {
 	int i;
+<<<<<<< HEAD
 	int fd = open("test.txt", O_RDONLY);
+=======
+	int fd = open("1.txt", O_RDONLY);
+>>>>>>> 83c8b82eb85c57f66ade676553fd446704c3955f
 	char *line;
 
 	/*
