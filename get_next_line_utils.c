@@ -55,6 +55,9 @@ char	*ft_strdup(const char *str)
 	char		*s;
 	int			i;
 
+	if(str == NULL)
+		return (NULL);
+
 	s = NULL;
 	i = 0;
 	while (str[i] != '\0')
