@@ -76,30 +76,26 @@ int			get_next_line(int fd, char **line)
 		*line = ft_strjoin(*line, buff);
 		free(temp);
 	}
-	if (read_byte || ft_strlen(remainer) || ft_strlen(*line))
+	if (read_byte)
 		return (1);
 	return (0);
 }
 
 
-int			main(void)
-{
-	int i;
-	int fd = open("test.txt", O_RDONLY);
-	char *line;
-
-
-	while ((i = get_next_line(fd, &line)) > 0)
-	{
-		printf(" i = %d : Str: %s \n", i, line);
-		free(line);
-	}
-
-
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
+//int			main(void)
+//{
+//	int i;
+//	int fd = open("test1.txt", O_RDONLY);
+//	char *line;
+//
+//
+//	while ((i = get_next_line(fd, &line)) > 0)
+//	{
+//		printf(" i = %d : Str: %s \n", i, line);
+//		free(line);
+//	}
+//
+//
 //
 //	i = get_next_line(fd, &line);
 //	printf(" i = %d : Str: %s \n", i, line);
@@ -176,8 +172,12 @@ int			main(void)
 //	i = get_next_line(fd, &line);
 //	printf(" i = %d : Str: %s \n", i, line);
 //	free(line);
-
-	return (0);
-}
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	return (0);
+//}
 
 
