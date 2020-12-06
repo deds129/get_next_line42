@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+// gcc -Wall -Wextra -Werror -D BUFFER_SIZE=32 get_next_line.c
+// get_next_line_utils.c
 #include "get_next_line.h"
 
 void		ft_bzero(char *s)
@@ -31,7 +33,7 @@ char		*remainer_check(char *remainer, char **line)
 
 	p_nextline = NULL;
 	if (remainer)
-		if ((p_nextline = (ft_strchr(remainer, '\n'))))
+		if ((p_nextline = ft_strchr(remainer, '\n')))
 		{
 			*p_nextline = '\0';
 			*line = ft_strdup(remainer);
@@ -56,7 +58,9 @@ int			get_next_line(int fd, char **line)
 	char				*p_nextline;
 	char				*temp;
 
-	if (!(buff = (char *)(malloc(sizeof(char) * BUFFER_SIZE + 1))) || fd < 0 || !line || BUFFER_SIZE < 1)
+	if (!(buff = (char *)(malloc(sizeof(char) * BUFFER_SIZE + 1))))
+		return (-1);
+	if (fd < 0 || !line || BUFFER_SIZE < 1)
 		return (-1);
 	p_nextline = remainer_check(remainer, line);
 	while (!p_nextline && (read_byte = read(fd, buff, BUFFER_SIZE)))
@@ -72,7 +76,7 @@ int			get_next_line(int fd, char **line)
 		*line = ft_strjoin(*line, buff);
 		free(temp);
 	}
-	if (read_byte || remainer_check(remainer,line) != NULL || ft_strlen(*line))
+	if (read_byte || ft_strlen(remainer) || ft_strlen(*line))
 		return (1);
 	return (0);
 }
@@ -81,89 +85,97 @@ int			get_next_line(int fd, char **line)
 int			main(void)
 {
 	int i;
-	int fd = open("test1.txt", O_RDONLY);
+	int fd = open("test.txt", O_RDONLY);
 	char *line;
 
 
-/*
-	get_next_line(fd, &line);
-	printf("%s\n",line);
-	free(line);
-
-*/
-/*
 	while ((i = get_next_line(fd, &line)) > 0)
 	{
 		printf(" i = %d : Str: %s \n", i, line);
 		free(line);
 	}
- */
 
 
 
 	i = get_next_line(fd, &line);
 	printf(" i = %d : Str: %s \n", i, line);
 	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
-
-	i = get_next_line(fd, &line);
-	printf(" i = %d : Str: %s \n", i, line);
-	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
+//
+//	i = get_next_line(fd, &line);
+//	printf(" i = %d : Str: %s \n", i, line);
+//	free(line);
 
 	return (0);
 }
