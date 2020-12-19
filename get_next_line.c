@@ -6,15 +6,13 @@
 /*   By: hanisha <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:26:02 by hanisha           #+#    #+#             */
-/*   Updated: 2020/12/01 14:42:23 by hanisha          ###   ########.fr       */
+/*   Updated: 2020/12/17 18:19:46 by hanisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// gcc -Wall -Wextra -Werror -D BUFFER_SIZE=32 get_next_line.c
-// get_next_line_utils.c
 #include "get_next_line.h"
 
-void		ft_bzero(char *s)
+void			ft_bzero(char *s)
 {
 	size_t				i;
 
@@ -27,7 +25,7 @@ void		ft_bzero(char *s)
 		}
 }
 
-char		*remainer_check(char *remainer, char **line)
+char			*remainer_check(char *remainer, char **line)
 {
 	char				*p_nextline;
 
@@ -50,134 +48,31 @@ char		*remainer_check(char *remainer, char **line)
 	return (p_nextline);
 }
 
-int			get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line)
 {
 	char				*buff;
 	int					read_byte;
 	static	char		*remainer;
 	char				*p_nextline;
-	char				*temp;
 
-	if (!(buff = (char *)(malloc(sizeof(char) * BUFFER_SIZE + 1))))
-		return (-1);
-	if (fd < 0 || !line || BUFFER_SIZE < 1)
+	if (!(buff = (char *)(malloc(sizeof(char) * BUFFER_SIZE + 1))) ||
+fd < 0 || !line || BUFFER_SIZE < 1)
 		return (-1);
 	p_nextline = remainer_check(remainer, line);
-	while (!p_nextline && (read_byte = read(fd, buff, BUFFER_SIZE)))
+	while (!p_nextline && (read_byte = read(fd, buff, BUFFER_SIZE)) != 0)
 	{
+		if (read_byte == -1)
+		{
+			free(buff);
+			return (-1);
+		}
 		buff[read_byte] = '\0';
 		if ((p_nextline = (ft_strchr(buff, '\n'))))
 		{
 			*p_nextline = '\0';
-			p_nextline++;
-			remainer = ft_strdup(p_nextline);
+			remainer = ft_strdup(++p_nextline);
 		}
-		temp = *line;
 		*line = ft_strjoin(*line, buff);
-		free(temp);
 	}
-	if (read_byte)
-		return (1);
-	return (0);
+	return ((read_byte || p_nextline || ft_strlen(remainer)) ? 1 : 0);
 }
-
-
-//int			main(void)
-//{
-//	int i;
-//	int fd = open("test1.txt", O_RDONLY);
-//	char *line;
-//
-//
-//	while ((i = get_next_line(fd, &line)) > 0)
-//	{
-//		printf(" i = %d : Str: %s \n", i, line);
-//		free(line);
-//	}
-//
-//
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	i = get_next_line(fd, &line);
-//	printf(" i = %d : Str: %s \n", i, line);
-//	free(line);
-//
-//	return (0);
-//}
-
-
