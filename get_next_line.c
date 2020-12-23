@@ -6,7 +6,7 @@
 /*   By: hanisha <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:26:02 by hanisha           #+#    #+#             */
-/*   Updated: 2020/12/23 15:07:17 by hanisha          ###   ########.fr       */
+/*   Updated: 2020/12/23 15:10:01 by hanisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ void				ft_bzero(char *s)
 			((char *)s)[i] = 0;
 			i++;
 		}
+}
+
+void				n_line(char **p_n, char **rem, char **buff, char ***line)
+{
+	char		*tmp;
+
+	if ((*p_n = (ft_strchr(*buff, '\n'))))
+	{
+		*(*p_n) = '\0';
+		tmp = *rem;
+		*rem = ft_strdup(++(*p_n));
+		free(tmp);
+	}
+	**line = ft_strjoin(**line, *buff);
 }
 
 char				*remainer_check(char *remainer, char **line)
@@ -54,7 +68,6 @@ int					get_next_line(int fd, char **line)
 	int			read_byte;
 	static char	*remainer;
 	char		*p_nextline;
-	char		*tmp;
 
 	if (fd < 0 || !line || BUFFER_SIZE < 1)
 		return (-1);
@@ -72,14 +85,7 @@ int					get_next_line(int fd, char **line)
 			return (-1);
 		}
 		buff[read_byte] = '\0';
-		if ((p_nextline = (ft_strchr(buff, '\n'))))
-		{
-			*p_nextline = '\0';
-			tmp = remainer;
-			remainer = ft_strdup(++p_nextline);
-			free(tmp);
-		}
-		*line = ft_strjoin(*line, buff);
+		n_line(&p_nextline, &remainer, &buff, &line);
 	}
 	free(buff);
 	return ((read_byte || p_nextline || ft_strlen(remainer)) ? 1 : 0);
