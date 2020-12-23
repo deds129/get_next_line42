@@ -6,13 +6,13 @@
 /*   By: hanisha <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:26:02 by hanisha           #+#    #+#             */
-/*   Updated: 2020/12/17 18:19:46 by hanisha          ###   ########.fr       */
+/*   Updated: 2020/12/23 15:07:17 by hanisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void			ft_bzero(char *s)
+void				ft_bzero(char *s)
 {
 	size_t				i;
 
@@ -25,9 +25,9 @@ void			ft_bzero(char *s)
 		}
 }
 
-char			*remainer_check(char *remainer, char **line)
+char				*remainer_check(char *remainer, char **line)
 {
-	char				*p_nextline;
+	char	*p_nextline;
 
 	p_nextline = NULL;
 	if (remainer)
@@ -48,18 +48,23 @@ char			*remainer_check(char *remainer, char **line)
 	return (p_nextline);
 }
 
-int				get_next_line(int fd, char **line)
+int					get_next_line(int fd, char **line)
 {
-	char				*buff;
-	int					read_byte;
-	static	char		*remainer;
-	char				*p_nextline;
+	char		*buff;
+	int			read_byte;
+	static char	*remainer;
+	char		*p_nextline;
+	char		*tmp;
 
-	if (!(buff = (char *)(malloc(sizeof(char) * BUFFER_SIZE + 1))) ||
-fd < 0 || !line || BUFFER_SIZE < 1)
+	if (fd < 0 || !line || BUFFER_SIZE < 1)
 		return (-1);
+	if (!(buff = (char *)(malloc(sizeof(char) * BUFFER_SIZE + 1))))
+	{
+		free(buff);
+		return (-1);
+	}
 	p_nextline = remainer_check(remainer, line);
-	while (!p_nextline && (read_byte = read(fd, buff, BUFFER_SIZE)) != 0)
+	while (!p_nextline && (read_byte = read(fd, buff, BUFFER_SIZE)))
 	{
 		if (read_byte == -1)
 		{
@@ -70,9 +75,12 @@ fd < 0 || !line || BUFFER_SIZE < 1)
 		if ((p_nextline = (ft_strchr(buff, '\n'))))
 		{
 			*p_nextline = '\0';
+			tmp = remainer;
 			remainer = ft_strdup(++p_nextline);
+			free(tmp);
 		}
 		*line = ft_strjoin(*line, buff);
 	}
+	free(buff);
 	return ((read_byte || p_nextline || ft_strlen(remainer)) ? 1 : 0);
 }
