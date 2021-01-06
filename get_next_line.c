@@ -62,11 +62,19 @@ char				*remainer_check(char *remainer, char **line)
 	return (p_nextline);
 }
 
+int					fr(char **str)
+{
+	if (*str != NULL)
+		free(*str);
+	*str = NULL;
+	return (0);
+}
+
 int					get_next_line(int fd, char **line)
 {
 	char		*buff;
 	int			read_byte;
-	static char	*remainer;
+	static char	*rem;
 	char		*p_nextline;
 
 	if (fd < 0 || !line || BUFFER_SIZE < 1)
@@ -76,7 +84,7 @@ int					get_next_line(int fd, char **line)
 		free(buff);
 		return (-1);
 	}
-	p_nextline = remainer_check(remainer, line);
+	p_nextline = remainer_check(rem, line);
 	while (!p_nextline && (read_byte = read(fd, buff, BUFFER_SIZE)))
 	{
 		if (read_byte == -1)
@@ -85,8 +93,8 @@ int					get_next_line(int fd, char **line)
 			return (-1);
 		}
 		buff[read_byte] = '\0';
-		n_line(&p_nextline, &remainer, &buff, &line);
+		n_line(&p_nextline, &rem, &buff, &line);
 	}
 	free(buff);
-	return ((read_byte || p_nextline || ft_strlen(remainer)) ? 1 : 0);
+	return ((read_byte || p_nextline || ft_strlen(rem)) ? 1 : fr(&rem));
 }
