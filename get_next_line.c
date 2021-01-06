@@ -79,9 +79,9 @@ int					get_next_line(int fd, char **line)
 
 	if (fd < 0 || !line || BUFFER_SIZE < 1)
 		return (-1);
-	if (!(buff = (char *)(malloc(sizeof(char) * BUFFER_SIZE + 1))))
+	if (!(buff = (char *)(malloc(sizeof(char) * (BUFFER_SIZE + 1)))))
 	{
-		free(buff);
+		fr(&buff);
 		return (-1);
 	}
 	p_nextline = remainer_check(rem, line);
@@ -89,7 +89,7 @@ int					get_next_line(int fd, char **line)
 	{
 		if (read_byte == -1)
 		{
-			free(buff);
+			fr(&buff);
 			return (-1);
 		}
 		buff[read_byte] = '\0';
